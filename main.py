@@ -1,24 +1,19 @@
 import discord
 from dotenv import load_dotenv
-from discord.ext import commands
-from discord.commands import Option, slash_command
 import os
 
 load_dotenv()
 bot_token = os.environ["BOT_TOKEN"]
+guild_id = os.environ["GUILD_ID"]
 
-intents = discord.Intents.default()
-
-bot = commands.Bot(command_prefix="!", intents=intents)
+bot = discord.Bot()
 
 @bot.event
 async def on_ready():
-    print(f'{bot.user} has connected to Discord!')
+    print(f"We have logged in as {bot.user}")
 
-@slash_command(name="hello", description="Say hello to the bot")
+@bot.slash_command(guild_ids=[guild_id])
 async def hello(ctx):
-    await ctx.respond(f"Hello, world!")
+    await ctx.respond("Hello!")
 
 bot.run(bot_token)
-
-#in development
