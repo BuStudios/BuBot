@@ -18,7 +18,7 @@ response = {
     "sus": "amogus",
     "bustudios": "heleo",
     "bubot": "yes? :robot:",
-    "ban me": "no",
+    "ban me": "no"
 }
 
 # logging in msg
