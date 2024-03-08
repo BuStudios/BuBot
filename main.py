@@ -23,7 +23,7 @@ async def on_message(message):
     if message.author.bot:  # Ignore messages from bots
         return
     
-    if 'sus' in message.content.lower():  # Check if 'sus' is in the message
+    if 'sus' == message.content.lower():  # Check if 'sus' is in the message
         await message.channel.send('amogus')
 
 # test command
