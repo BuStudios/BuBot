@@ -36,6 +36,14 @@ async def on_message(message):
         await message.channel.send(response[user_message])
     if user_message in ("e", "a"): # imagine using tuples xd
             await message.add_reaction("🇪")
+    
+    if "rick" in user_message:
+        await message.channel.send("never")
+        await message.channel.send("gonna")
+        await message.channel.send("give")
+        await message.channel.send("you")
+        await message.channel.send("up")
+        await message.channel.send("🤖")
 
 # test command
 @bot.slash_command(guild_ids=[guild_id])
