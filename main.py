@@ -18,7 +18,6 @@ response = {
     "bustudios": "heleo",
     "bubot": "yes? :robot:",
     "ban me": "no",
-    "e": ":regional_indicator_e:"
 }
 
 # logging in msg
@@ -35,6 +34,8 @@ async def on_message(message):
 
     if user_message in response: # Checks if item is in the message
         await message.channel.send(response[user_message])
+    if user_message in ("e", "a"): # imagine using tuples xd
+            await message.add_reaction("🇪")
 
 # test command
 @bot.slash_command(guild_ids=[guild_id])
