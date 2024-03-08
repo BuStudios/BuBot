@@ -1,5 +1,6 @@
 import discord
 from dotenv import load_dotenv
+import requests
 import os
 
 load_dotenv() # loads the secret files
@@ -54,6 +55,16 @@ async def hello(ctx):
 @bot.slash_command(guild_ids=[guild_id])
 async def active_dev(ctx):
     await ctx.respond("https://discord.com/developers/active-developer")
+
+@bot.slash_command(guild_ids=[guild_id])
+async def website_server(ctx):
+    req = requests.get("https://stats.uptimerobot.com/api/getMonitorList/7ryoZuEPWO").json()
+    uptime_ratio = req["psp"]["monitors"][1]["90dRatio"]["ratio"]
+    today_down = req["psp"]["monitors"][1]["dailyRatios"][0]["ratio"]
+    if float(today_down) < 100:
+        await ctx.respond("website uptime ratio: " + uptime_ratio + "%\ndowntime detected today: check https://status.bustudios.org/ for more information")
+    else:
+        await ctx.respond("website uptime ratio: " + uptime_ratio + "%\nno downtime detected today")
 
 # runs the bot
 bot.run(bot_token)
