@@ -6,6 +6,7 @@ import os
 load_dotenv() # loads the secret files
 bot_token = os.getenv("BOT_TOKEN")
 guild_id = os.getenv("GUILD_ID")
+# guilds used to add command to a specific server immediatly
 
 intents = discord.Intents.default()
 intents.messages = True  # Enables the bot to receive messages
