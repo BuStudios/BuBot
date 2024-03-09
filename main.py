@@ -39,12 +39,9 @@ async def on_message(message):
             await message.add_reaction("🇪")
     
     if "rick" in user_message:
-        await message.channel.send("never")
-        await message.channel.send("gonna")
-        await message.channel.send("give")
-        await message.channel.send("you")
-        await message.channel.send("up")
-        await message.channel.send("🤖")
+        message_rick = ["never", "gonna", "give", "you", "up", "🐳"]
+        for msg_rick in message_rick:
+            await message.channel.send(msg_rick)
 
 # test command
 @bot.slash_command(guild_ids=[guild_id])
