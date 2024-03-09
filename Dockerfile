@@ -45,7 +45,9 @@ USER appuser
 COPY . .
 
 # Expose the port that the application listens on.
+# probably not needed, but good if you want to set up a flask web server to monitor.
 EXPOSE 5000
 
 # Run the application.
 CMD ["python3", "./main.py"]
+# 👆 you need to use python3 otherwise it will not work
