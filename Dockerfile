@@ -42,7 +42,7 @@ USER appuser
 COPY . .
 
 # Expose the port that the application listens on.
-# probably not needed, but good if you want to set up a flask web server to monitor.
+# not needed in this setup, but good if you want to set up a flask web server to monitor.
 EXPOSE 5000
 
 # Run the application.
