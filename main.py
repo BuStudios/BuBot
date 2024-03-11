@@ -27,7 +27,6 @@ response = {
 async def on_ready():
     print(f"logged in as {bot.user}")
 
-
 @bot.event
 async def on_message(message):
     if message.author.bot:  # Ignore messages from bots
