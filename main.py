@@ -49,11 +49,6 @@ async def on_message(message):
 async def hello(ctx):
     await ctx.respond(f"Hello {ctx.author.name}!")
 
-# for getting the active developer badge
-@bot.slash_command(guild_ids=[guild_id])
-async def active_dev(ctx):
-    await ctx.respond("https://discord.com/developers/active-developer")
-
 @bot.slash_command(guild_ids=[guild_id])
 async def website_server(ctx):
     req = requests.get("https://stats.uptimerobot.com/api/getMonitorList/7ryoZuEPWO").json()
