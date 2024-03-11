@@ -19,7 +19,7 @@ response = {
     "sus": "amogus",
     "bustudios": "heleo",
     "bubot": "yes? :robot:",
-    "ban me": "no"
+    "🤖": "hello?" #emoji test
 }
 
 # logging in msg
