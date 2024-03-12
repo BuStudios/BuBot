@@ -39,7 +39,7 @@ async def on_message(message):
             await message.add_reaction("🇪")
     
     if "rick" in user_message:
-        message_rick = ["never", "gonna", "give", "you", "up", "🐳"]
+        message_rick = ["never", "gonna", "give", "you", "up", "🦀"]
         for msg_rick in message_rick:
             await message.channel.send(msg_rick)
 
