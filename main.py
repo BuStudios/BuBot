@@ -50,6 +50,7 @@ async def hello(ctx):
 
 @bot.slash_command(guild_ids=[guild_id])
 async def website_server(ctx):
+    # requests the api of my monitor
     req = requests.get("https://stats.uptimerobot.com/api/getMonitorList/7ryoZuEPWO").json()
     uptime_ratio = req["psp"]["monitors"][1]["90dRatio"]["ratio"]
     today_down = req["psp"]["monitors"][1]["dailyRatios"][0]["ratio"]
