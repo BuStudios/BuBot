@@ -10,9 +10,8 @@ guild_id = os.getenv("GUILD_ID")
 
 intents = discord.Intents.default()
 intents.messages = True  # Enables the bot to receive messages
-intents.message_content = True  # This is crucial for accessing message.content
+intents.message_content = True  # This is needed for accessing message.content
 
-# Initialize your bot with the specified intents
 bot = discord.Bot(command_prefix="!", intents=intents)
 
 response = {
