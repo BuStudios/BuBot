@@ -25,7 +25,7 @@ response = {
 @bot.event
 async def on_ready():
     print(f"logged in as {bot.user}")
-    send_message.start()
+    #send_message.start()
 
 @bot.event
 async def on_message(message):
@@ -65,10 +65,12 @@ async def meme(ctx):
     else:
         await ctx.respond(embed=embed, ephemeral=True)
 
+""""
 @tasks.loop(seconds=2)
 async def send_message():
     channel = await bot.fetch_channel(reminder_channel)
     await channel.send("Hello")
+"""
 
 # runs the bot
 bot.run(bot_token)
