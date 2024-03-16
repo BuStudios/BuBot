@@ -48,6 +48,7 @@ async def hello(ctx):
 
 @bot.slash_command(guild_ids=[guild_id], description="get memed")
 async def meme(ctx):
+    # meme api
     meme = json.loads(requests.get("https://meme-api.com/gimme").text)
     meme_image = meme["preview"][-1]
     meme_title = meme["title"]
@@ -55,6 +56,7 @@ async def meme(ctx):
     embed = discord.Embed(title=meme_title)
     embed.set_image(url=meme_image)
 
+    # does'nt allow nsfw content
     if meme["nsfw"] == "True":
         await ctx.respond("error")
     else:
