@@ -1,5 +1,6 @@
 import discord
 from dotenv import load_dotenv
+from discord.ext import commands, tasks
 import json
 import requests
 import os
@@ -8,6 +9,7 @@ load_dotenv() # loads the secret files
 bot_token = os.getenv("BOT_TOKEN") # getenv is better than .environ apparantly
 guild_id = os.getenv("GUILD_ID")
 # guilds used to add command to a specific server immediatly
+reminder_channel = os.getenv("REMINDER_CHANNEL")
 
 intents = discord.Intents.default()
 intents.messages = True  # Enables the bot to receive messages
@@ -23,6 +25,7 @@ response = {
 @bot.event
 async def on_ready():
     print(f"logged in as {bot.user}")
+    send_message.start()
 
 @bot.event
 async def on_message(message):
@@ -57,10 +60,15 @@ async def meme(ctx):
     embed.set_image(url=meme_image)
 
     # doesnt allow nsfw content
-    if meme["nsfw"] == "True":
+    if meme["nsfw"] == True:
         await ctx.respond("error")
     else:
         await ctx.respond(embed=embed, ephemeral=True)
+
+@tasks.loop(seconds=2)
+async def send_message():
+    channel = await bot.fetch_channel(reminder_channel)
+    await channel.send("Hello")
 
 # runs the bot
 bot.run(bot_token)
