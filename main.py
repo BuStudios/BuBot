@@ -60,7 +60,7 @@ async def meme(ctx):
     if meme["nsfw"] == "True":
         await ctx.respond("error")
     else:
-        await ctx.respond(embed=embed)
+        await ctx.respond(embed=embed, ephemeral=True)
 
 # runs the bot
 bot.run(bot_token)
