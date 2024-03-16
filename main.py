@@ -1,6 +1,7 @@
 import discord
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
+import reminder_db
 import json
 import requests
 import os
@@ -64,6 +65,12 @@ async def meme(ctx):
         await ctx.respond("error")
     else:
         await ctx.respond(embed=embed, ephemeral=True)
+
+@bot.slash_command(guild_ids=[guild_id])
+async def reminder(ctx, time: int):
+    reminder_db.add_reminder(time)
+    await ctx.respond("reminder set!", ephemeral=True)
+
 
 """"
 @tasks.loop(seconds=2)
