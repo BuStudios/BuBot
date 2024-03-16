@@ -15,10 +15,7 @@ intents.message_content = True  # This is needed for accessing message.content
 bot = discord.Bot(command_prefix="!", intents=intents)
 
 response = {
-    "sus": "amogus",
-    "bustudios": "heleo",
-    "bubot": "yes? :robot:",
-    "🤖": "hello?" #emoji test
+    "bubot": "amogus",
 }
 
 # logging in msg
@@ -47,17 +44,6 @@ async def on_message(message):
 @bot.slash_command(guild_ids=[guild_id])
 async def hello(ctx):
     await ctx.respond(f"Hello {ctx.author.name}!")
-
-@bot.slash_command(guild_ids=[guild_id])
-async def website_server(ctx):
-    # requests the api of my monitor
-    req = requests.get("https://stats.uptimerobot.com/api/getMonitorList/7ryoZuEPWO").json()
-    uptime_ratio = req["psp"]["monitors"][1]["90dRatio"]["ratio"]
-    today_down = req["psp"]["monitors"][1]["dailyRatios"][0]["ratio"]
-    if float(today_down) < 100:
-        await ctx.respond("website uptime ratio: " + uptime_ratio + "%\ndowntime detected today: check https://status.bustudios.org/ for more information")
-    else:
-        await ctx.respond("website uptime ratio: " + uptime_ratio + "%\nno downtime detected today")
 
 # runs the bot
 bot.run(bot_token)
