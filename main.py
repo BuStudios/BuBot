@@ -89,7 +89,7 @@ async def reminder(ctx, reason: Option(str, "Reminder reason", max_length=50), t
     reminder_time_unix = timestamp + int(time.time())
     reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reason)
 
-    await ctx.respond(f"✅ Reminder set! Ending <t:{reminder_time_unix}:R>", ephemeral=True)
+    await ctx.respond(f"✅ Reminder set! I will remind you <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
 # checks if there are any due reminders every 60 seconds
