@@ -97,7 +97,7 @@ async def send_message():
     channel = await bot.fetch_channel(reminder_channel)
 
     for reminders in due_reminders:
-        await channel.send(f"🔔 <@{reminders["user_id"]}> reminder!. {reminders["reason"]}")
+        await channel.send(f"🔔 <@{reminders["user_id"]}> reminder! {reminders["reason"]}")
         reminder_db.delete_reminder(reminders["reminder_id"])
 
 
