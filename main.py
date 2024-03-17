@@ -74,7 +74,7 @@ async def meme(ctx):
 @bot.slash_command(guild_ids=[guild_id])
 async def reminder(ctx, timestamp: int):
     reminder_time_unix = timestamp + int(time.time())
-    #reminder_db.add_reminder(reminder_time_unix)
+    reminder_db.add_reminder(reminder_time_unix, ctx.author)
     await ctx.respond(f"Reminder <t:{reminder_time_unix}:R>", ephemeral=True)
 
 

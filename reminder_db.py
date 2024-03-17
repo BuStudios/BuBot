@@ -17,3 +17,6 @@ def add_reminder(timestamp, username):
     }
 
     collection.insert_one(reminder)
+
+def check_due_reminders():
+    pass
