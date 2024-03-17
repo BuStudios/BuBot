@@ -71,6 +71,10 @@ async def reminder(ctx, time: int):
     reminder_db.add_reminder(time)
     await ctx.respond("reminder set!", ephemeral=True)
 
+@bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
+async def ping(ctx):
+    await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
+
 """"
 @tasks.loop(seconds=2)
 async def send_message():
