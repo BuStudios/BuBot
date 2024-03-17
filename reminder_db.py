@@ -10,9 +10,10 @@ client = MongoClient(uri)
 db = client["discord"]
 collection = db["reminders"]
 
-def add_reminder(time):
+def add_reminder(timestamp, username):
     reminder = {
-        "time": time
+        "timestamp": timestamp,
+        "user": username
     }
 
     collection.insert_one(reminder)
