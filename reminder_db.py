@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
+import time
 import os
 
 load_dotenv()
@@ -19,4 +20,14 @@ def add_reminder(timestamp, username):
     collection.insert_one(reminder)
 
 def check_due_reminders():
+    query = {
+        "timestamp": {"$lt": int(time.time())}
+    }
+    try:
+        due_reminders = collection.find(query)
+        return due_reminders
+    except Exception:
+        return "Error"
+    
+def delete_reminder(reminder_id):
     pass

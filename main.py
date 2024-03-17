@@ -32,7 +32,7 @@ response = {
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
-    #send_message.start()
+    send_message.start()
 
 
 @bot.event
@@ -89,12 +89,19 @@ async def reminder(ctx, timestamp: int):
 async def ping(ctx):
     await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
 
-""""
-@tasks.loop(seconds=2)
+
+@tasks.loop(seconds=10)
 async def send_message():
-    channel = await bot.fetch_channel(reminder_channel)
-    await channel.send("Hello")
-"""
+    due_reminders = reminder_db.check_due_reminders()
+    if due_reminders != "Error":
+        channel = await bot.fetch_channel(reminder_channel)
+        await channel.send("Hello")
+        for reminders in due_reminders:
+            await channel.send(f"Due Reminder for {reminders["user"]}")
+    else:
+        channel = await bot.fetch_channel(reminder_channel)
+        await channel.send("No Reminders")
+
 
 # runs the bot
 bot.run(bot_token)
