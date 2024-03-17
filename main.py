@@ -66,10 +66,18 @@ async def meme(ctx):
     else:
         await ctx.respond(embed=embed, ephemeral=True)
 
+
+
+
+
 @bot.slash_command(guild_ids=[guild_id])
 async def reminder(ctx, time: int):
     reminder_db.add_reminder(time)
     await ctx.respond("reminder set!", ephemeral=True)
+
+
+
+
 
 @bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
 async def ping(ctx):
