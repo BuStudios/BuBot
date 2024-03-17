@@ -7,27 +7,33 @@ import requests
 import time
 import os
 
+
 load_dotenv() # loads the secret files
 bot_token = os.getenv("BOT_TOKEN") # getenv is better than .environ apparantly
 guild_id = os.getenv("GUILD_ID")
 # guilds used to add command to a specific server immediatly
 reminder_channel = os.getenv("REMINDER_CHANNEL")
 
+
 intents = discord.Intents.default()
 intents.messages = True  # Enables the bot to receive messages
 intents.message_content = True  # This is needed for accessing message.content
 
+
 bot = discord.Bot(command_prefix="!", intents=intents)
+
 
 response = {
     "bubot": "amogus",
 }
 
+
 # logging in msg
 @bot.event
 async def on_ready():
-    print(f"logged in as {bot.user}")
+    print(f"Logged in as {bot.user}")
     #send_message.start()
+
 
 @bot.event
 async def on_message(message):
@@ -46,10 +52,12 @@ async def on_message(message):
         for msg_rick in message_rick:
             await message.channel.send(msg_rick)
 
+
 # test command
 @bot.slash_command(guild_ids=[guild_id])
 async def hello(ctx):
     await ctx.respond(f"Hello {ctx.author.name}!")
+
 
 @bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")
 async def meme(ctx):
@@ -68,17 +76,13 @@ async def meme(ctx):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-
-
-
 @bot.slash_command(guild_ids=[guild_id])
 async def reminder(ctx, timestamp: int):
+
     reminder_time_unix = timestamp + int(time.time())
-    reminder_db.add_reminder(reminder_time_unix, ctx.author)
-    await ctx.respond(f"Reminder <t:{reminder_time_unix}:R>", ephemeral=True)
+    reminder_db.add_reminder(reminder_time_unix, ctx.author.name)
 
-
-
+    await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
 @bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
