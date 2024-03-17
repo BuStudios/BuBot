@@ -32,7 +32,7 @@ response = {
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
-    send_message.start()
+    check_reminders.start() # Starts the reminder checker
 
 
 @bot.event
@@ -90,15 +90,18 @@ async def reminder(ctx, reason: str, timestamp: int):
     await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
-@tasks.loop(seconds=5)
-async def send_message():
+# checks if there are any due reminders every 60 seconds
+@tasks.loop(seconds=60)
+async def check_reminders():
     due_reminders = reminder_db.check_due_reminders()
 
-    channel = await bot.fetch_channel(reminder_channel)
-
     for reminders in due_reminders:
-        await channel.send(f"🔔 <@{reminders["user_id"]}> reminder! {reminders["reason"]}")
-        reminder_db.delete_reminder(reminders["reminder_id"])
+        user = await bot.fetch_user(reminders["user_id"]) # fetches the user by their user_id
+
+        dm_channel = await user.create_dm() # creates a dm with the user
+        await dm_channel.send(f"🔔 <@{reminders["user_id"]}> reminder! {reminders["reason"]}") # send a dm to the user
+
+        reminder_db.delete_reminder(reminders["reminder_id"]) # deletes the reminder from the database
 
 
 # runs the bot
