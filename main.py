@@ -82,9 +82,12 @@ async def ping(ctx):
     await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
 
 
-@bot.slash_command(guild_ids=[guild_id])
-async def reminder(ctx, reason: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time")):  # type: ignore
-# ^ the Option thing gives an error, but idk why lol
+reminder = bot.create_group("reminder", "manage reminders")
+
+
+@reminder.command(guild_ids=[guild_id], name="set", description="set a reminder")
+async def set(ctx, reason: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time")):  # type: ignore
+# ^ the Option thing gives an error, but idk why lol --> will change later! ⚠️
 
     reminder_time_unix = timestamp + int(time.time())
     reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reason)
