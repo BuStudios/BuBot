@@ -106,5 +106,6 @@ async def check_reminders():
 
         reminder_db.delete_reminder(reminders["reminder_id"]) # deletes the reminder from the database
 
+
 # runs the bot
 bot.run(bot_token)
