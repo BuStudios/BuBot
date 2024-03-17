@@ -57,7 +57,7 @@ async def on_message(message):
 # test command
 @bot.slash_command(guild_ids=[guild_id])
 async def hello(ctx):
-    await ctx.respond(f"Hello {ctx.author.name}!")
+    await ctx.respond(f"Hello {ctx.author.display_name}!")
 
 
 @bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")
