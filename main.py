@@ -80,7 +80,7 @@ async def meme(ctx):
 async def reminder(ctx, timestamp: int):
 
     reminder_time_unix = timestamp + int(time.time())
-    reminder_db.add_reminder(reminder_time_unix, ctx.author.name)
+    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id)
 
     await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
 
@@ -90,17 +90,15 @@ async def ping(ctx):
     await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
 
 
-@tasks.loop(seconds=10)
+@tasks.loop(seconds=60)
 async def send_message():
     due_reminders = reminder_db.check_due_reminders()
-    if due_reminders != "Error":
-        channel = await bot.fetch_channel(reminder_channel)
-        await channel.send("Hello")
-        for reminders in due_reminders:
-            await channel.send(f"Due Reminder for {reminders["user"]}")
-    else:
-        channel = await bot.fetch_channel(reminder_channel)
-        await channel.send("No Reminders")
+
+    channel = await bot.fetch_channel(reminder_channel)
+
+    for reminders in due_reminders:
+        await channel.send(f"Due Reminder for <@{reminders["user_id"]}>")
+        reminder_db.delete_reminder(reminders["reminder_id"])
 
 
 # runs the bot

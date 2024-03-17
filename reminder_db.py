@@ -12,11 +12,12 @@ client = MongoClient(uri)
 db = client["discord"]
 collection = db["reminders"]
 
-def add_reminder(timestamp, username):
+def add_reminder(timestamp, username, user_id):
     reminder = {
-        "reminder_id": uuid.uuid4(),
+        "reminder_id": str(uuid.uuid4()),
         "timestamp": timestamp,
-        "user": username
+        "user": username,
+        "user_id": user_id
     }
 
     collection.insert_one(reminder)
@@ -25,11 +26,8 @@ def check_due_reminders():
     query = {
         "timestamp": {"$lt": int(time.time())}
     }
-    try:
-        due_reminders = collection.find(query)
-        return due_reminders
-    except Exception:
-        return "Error"
+    due_reminders = collection.find(query)
+    return due_reminders
     
 def delete_reminder(reminder_id):
-    pass
+    collection.delete_one({"reminder_id": reminder_id})
