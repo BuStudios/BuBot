@@ -90,14 +90,14 @@ async def reminder(ctx, reason: str, timestamp: int):
     await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
-@tasks.loop(seconds=60)
+@tasks.loop(seconds=5)
 async def send_message():
     due_reminders = reminder_db.check_due_reminders()
 
     channel = await bot.fetch_channel(reminder_channel)
 
     for reminders in due_reminders:
-        await channel.send(f"Due Reminder for <@{reminders["user_id"]}>.")
+        await channel.send(f"🔔 <@{reminders["user_id"]}> reminder!. {reminders["reason"]}")
         reminder_db.delete_reminder(reminders["reminder_id"])
 
 

@@ -19,10 +19,11 @@ collection = db["reminders"]
 
 
 # adds a reminder to the database
-def add_reminder(timestamp, username, user_id):
+def add_reminder(timestamp, username, user_id, reason):
     reminder = {
         "reminder_id": str(uuid.uuid4()), # generates a id for the reminder
         "timestamp": timestamp,
+        "reason": reason,
         "user": username,
         "user_id": user_id # needed to ping the user later
     }
