@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from dotenv import load_dotenv
+import uuid
 import time
 import os
 
@@ -13,6 +14,7 @@ collection = db["reminders"]
 
 def add_reminder(timestamp, username):
     reminder = {
+        "reminder_id": uuid.uuid4(),
         "timestamp": timestamp,
         "user": username
     }
