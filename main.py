@@ -4,6 +4,7 @@ from discord.ext import commands, tasks
 import reminder_db
 import json
 import requests
+import time
 import os
 
 load_dotenv() # loads the secret files
@@ -71,9 +72,10 @@ async def meme(ctx):
 
 
 @bot.slash_command(guild_ids=[guild_id])
-async def reminder(ctx, time: int):
-    reminder_db.add_reminder(time)
-    await ctx.respond("reminder set!", ephemeral=True)
+async def reminder(ctx, timestamp: int):
+    reminder_time_unix = timestamp + time.time()
+    #reminder_db.add_reminder(reminder_time_unix)
+    await ctx.respond(f"Reminder <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
 
