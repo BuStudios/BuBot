@@ -50,7 +50,7 @@ async def on_message(message):
 async def hello(ctx):
     await ctx.respond(f"Hello {ctx.author.name}!")
 
-@bot.slash_command(guild_ids=[guild_id], description="get memed")
+@bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")
 async def meme(ctx):
     # meme api
     meme = json.loads(requests.get("https://meme-api.com/gimme/memes").text)
@@ -70,7 +70,6 @@ async def meme(ctx):
 async def reminder(ctx, time: int):
     reminder_db.add_reminder(time)
     await ctx.respond("reminder set!", ephemeral=True)
-
 
 """"
 @tasks.loop(seconds=2)
