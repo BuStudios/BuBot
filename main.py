@@ -74,7 +74,7 @@ async def meme(ctx):
     if meme["nsfw"] == True:
         await ctx.respond("error")
     else:
-        await ctx.respond(embed=embed, ephemeral=True)
+        await ctx.respond(embed=embed)
 
 
 @bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
