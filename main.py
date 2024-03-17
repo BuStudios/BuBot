@@ -76,18 +76,18 @@ async def meme(ctx):
         await ctx.respond(embed=embed, ephemeral=True)
 
 
-@bot.slash_command(guild_ids=[guild_id])
-async def reminder(ctx, timestamp: int):
-
-    reminder_time_unix = timestamp + int(time.time())
-    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id)
-
-    await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
-
-
 @bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
 async def ping(ctx):
     await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
+
+
+@bot.slash_command(guild_ids=[guild_id])
+async def reminder(ctx, reason: str, timestamp: int):
+
+    reminder_time_unix = timestamp + int(time.time())
+    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reason)
+
+    await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
 @tasks.loop(seconds=60)
@@ -97,7 +97,7 @@ async def send_message():
     channel = await bot.fetch_channel(reminder_channel)
 
     for reminders in due_reminders:
-        await channel.send(f"Due Reminder for <@{reminders["user_id"]}>")
+        await channel.send(f"Due Reminder for <@{reminders["user_id"]}>.")
         reminder_db.delete_reminder(reminders["reminder_id"])
 
 
