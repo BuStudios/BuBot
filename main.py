@@ -83,12 +83,13 @@ async def ping(ctx):
 
 
 @bot.slash_command(guild_ids=[guild_id])
-async def reminder(ctx, reason: Option(str, "Reminder reason", max_length=50), time: Option(int, "Reminder Time")):  # type: ignore
+async def reminder(ctx, reason: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time")):  # type: ignore
+# ^ the Option thing gives an error, but idk why lol
 
-    reminder_time_unix = time + int(time.time())
+    reminder_time_unix = timestamp + int(time.time())
     reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reason)
 
-    await ctx.respond(f"Reminder set! <t:{reminder_time_unix}:R>", ephemeral=True)
+    await ctx.respond(f"✅ Reminder set! Ending <t:{reminder_time_unix}:R>", ephemeral=True)
 
 
 # checks if there are any due reminders every 60 seconds
@@ -100,7 +101,8 @@ async def check_reminders():
         user = await bot.fetch_user(reminders["user_id"]) # fetches the user by their user_id
 
         dm_channel = await user.create_dm() # creates a dm with the user
-        await dm_channel.send(f"🔔 <@{reminders["user_id"]}> reminder! {reminders["reason"]}") # send a dm to the user
+        await dm_channel.send(f"🔔 *{reminders["reason"]}*") # send a dm to the user
+        # <@{reminders["user_id"]}> Reminder!
 
         reminder_db.delete_reminder(reminders["reminder_id"]) # deletes the reminder from the database
 
