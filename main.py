@@ -108,7 +108,11 @@ async def set(ctx, reminder: Option(str, "Reminder reason", max_length=50), time
 
 @reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")
 async def list(ctx):
-    user_reminders = reminder_db.get_user_reminders(ctx.author.id)
+    user_reminders, reminder_count = reminder_db.get_user_reminders(ctx.author.id)
+    if reminder_count == 0:
+        await ctx.respond("<:no:> You don't have any active reminders!")
+    else:
+        await ctx.respond(":no: Yrgergeg't have any active reminders!")
 
 
 # checks if there are any due reminders every 60 seconds
