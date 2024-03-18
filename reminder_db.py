@@ -43,3 +43,12 @@ def check_due_reminders():
 # deletes a reminder after it has been delivered
 def delete_reminder(reminder_id):
     collection.delete_one({"reminder_id": reminder_id})
+
+
+# find the active reminders of a user
+def get_user_reminders(username):
+    query = {
+        "user": username
+    }
+    user_reminders = collection.find(query)
+    return user_reminders
