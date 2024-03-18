@@ -85,14 +85,19 @@ async def ping(ctx):
 reminder = bot.create_group("reminder", "manage reminders")
 
 
-@reminder.command(guild_ids=[guild_id], name="set", description="set a reminder")
-async def set(ctx, reason: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time")):  # type: ignore
+@reminder.command(guild_ids=[guild_id], name="set", description="Set a reminder")
+async def set(ctx, reminder: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time", name="time")):  # type: ignore
 # ^ the Option thing gives an error, but idk why lol --> will change later! ⚠️
 
     reminder_time_unix = timestamp + int(time.time())
-    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reason)
+    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reminder)
 
     await ctx.respond(f"✅ Reminder set! I will remind you <t:{reminder_time_unix}:R>", ephemeral=True)
+
+
+@reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")
+async def list(ctx):
+    await ctx.respond("placeholder")
 
 
 # checks if there are any due reminders every 60 seconds
