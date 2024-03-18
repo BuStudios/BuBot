@@ -29,7 +29,22 @@ response = {
 }
 
 
-# logging in msg
+class ReminderView(discord.ui.View):
+    def __init__(self, user_reminders):
+        super().__init__()
+        self.select_menu = discord.ui.Select(placeholder="Select a reminder to cancel", min_values=1, max_values=1)
+
+        for reminder in user_reminders:
+            self.select_menu.add_option(label=reminder["reason"], description=str(reminder["timestamp"]), value=reminder["reminder_id"])
+            
+        self.select_menu.callback = self.select_callback
+        self.add_item(self.select_menu)
+
+    async def select_callback(self, interaction: discord.Interaction):
+        await interaction.response.send_message(f"{self.select_menu.values[0]}")
+    
+
+# logging in msgq
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
@@ -109,10 +124,22 @@ async def set(ctx, reminder: Option(str, "Reminder reason", max_length=50), time
 @reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")
 async def list(ctx):
     user_reminders, reminder_count = reminder_db.get_user_reminders(ctx.author.id)
+
     if reminder_count == 0:
         await ctx.respond("❌ You don't have any active reminders!")
     else:
-        embed = discord.Embed()
+        embed = discord.Embed(title="Your reminders")
+        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar.url)
+
+        reminder_text = "\n".join([f"🔔 **{reminder["reason"]}** <t:{reminder["timestamp"]}:R>" for reminder in user_reminders])
+
+        embed.add_field(name="", value=reminder_text)
+
+        embed.set_footer(text=f"You have {reminder_count} active reminders")
+
+        view = ReminderView(user_reminders)
+
+        await ctx.respond(embed=embed, view=view)
 
 
 # checks if there are any due reminders every 60 seconds

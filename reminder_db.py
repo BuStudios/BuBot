@@ -52,4 +52,5 @@ def get_user_reminders(username_id):
     }
     user_reminders = collection.find(query)
     count = collection.count_documents(filter=query)
+    user_reminders = list(user_reminders)
     return user_reminders, count
