@@ -46,9 +46,9 @@ def delete_reminder(reminder_id):
 
 
 # find the active reminders of a user
-def get_user_reminders(username):
+def get_user_reminders(username_id):
     query = {
-        "user": username
+        "user_id": username_id
     }
     user_reminders = collection.find(query)
     return user_reminders
