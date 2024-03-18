@@ -82,6 +82,14 @@ async def ping(ctx):
     await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
 
 
+@bot.slash_command(guild_ids=[guild_id], name="avatar", description="Get a user's avatar")
+async def avatar(ctx, user: Option(discord.User, "Select a user", required = False, default = '')):  # type: ignore
+    #if user == "":
+    #    await ctx.respond(ctx.author.avatar.url)
+    #else:
+    #    await ctx.respond(user.avatar.url)
+
+
 reminder = bot.create_group("reminder", "manage reminders")
 
 
