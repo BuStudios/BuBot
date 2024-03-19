@@ -1,4 +1,5 @@
 import discord
+from discord.ui.item import Item
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from discord.commands import Option
@@ -46,6 +47,23 @@ class ReminderView(discord.ui.View):
             await interaction.response.send_message(f"✅ The reminder `{self.select_menu.values[0]}` has been canceled!", ephemeral=True)
         else:
             await interaction.response.send_message("❌ Could not find the reminder to delete!", ephemeral=True)
+
+
+class CancelButton(discord.ui.View):
+    def __init__(self, user_id):
+        super().__init__()
+        self.user_id = user_id
+
+    @discord.ui.button(label="Cancel Reminder", style=discord.ButtonStyle.danger)
+    async def button_callback(self, button, interaction):
+        if interaction.user.id == self.user_id:
+
+            button.disabled = True
+            await interaction.response.edit_message(view=self)
+
+            await interaction.followup.send("✅ Canceled Reminder!", ephemeral=True)
+        else:
+            await interaction.response.send_message("❌ You can't cancel someone elses reminder!", ephemeral=True)
     
 
 # logging in msgq
@@ -122,7 +140,7 @@ async def set(ctx, reminder: Option(str, "Reminder reason", max_length=50), time
     reminder_time_unix = timestamp + int(time.time())
     reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reminder)
 
-    await ctx.respond(f"✅ Reminder set! I will remind you <t:{reminder_time_unix}:R>", ephemeral=True)
+    await ctx.respond(f"✅ Reminder set! I will remind you <t:{reminder_time_unix}:R>", ephemeral=True, view=CancelButton(ctx.author.id))
 
 
 @reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")
