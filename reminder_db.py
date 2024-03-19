@@ -21,7 +21,7 @@ collection = db["reminders"]
 # adds a reminder to the database
 def add_reminder(timestamp, username, user_id, reason):
     reminder = {
-        "reminder_id": str(uuid.uuid4()), # generates a id for the reminder
+        "reminder_id": (str(uuid.uuid4()))[:7], # generates a id for the reminder
         "timestamp": timestamp,
         "reason": reason,
         "user": username,
@@ -42,7 +42,12 @@ def check_due_reminders():
 
 # deletes a reminder after it has been delivered
 def delete_reminder(reminder_id):
-    collection.delete_one({"reminder_id": reminder_id})
+    count = collection.count_documents(filter={"reminder_id": reminder_id})
+    if count >= 1:
+        collection.delete_one({"reminder_id": reminder_id})
+        return "success"
+    else:
+        return "error"
 
 
 # find the active reminders of a user

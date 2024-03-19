@@ -35,13 +35,17 @@ class ReminderView(discord.ui.View):
         self.select_menu = discord.ui.Select(placeholder="Select a reminder to cancel", min_values=1, max_values=1)
 
         for reminder in user_reminders:
-            self.select_menu.add_option(label=reminder["reason"], description=str(reminder["timestamp"]), value=reminder["reminder_id"])
+            self.select_menu.add_option(label=reminder["reminder_id"], description=reminder["reason"], value=reminder["reminder_id"])
             
         self.select_menu.callback = self.select_callback
         self.add_item(self.select_menu)
 
     async def select_callback(self, interaction: discord.Interaction):
-        await interaction.response.send_message(f"{self.select_menu.values[0]}")
+        deletion = reminder_db.delete_reminder(self.select_menu.values[0])
+        if deletion == "success":
+            await interaction.response.send_message(f"✅ The reminder `{self.select_menu.values[0]}` has been canceled!", ephemeral=True)
+        else:
+            await interaction.response.send_message("❌ Could not find the reminder to delete!", ephemeral=True)
     
 
 # logging in msgq
@@ -126,12 +130,12 @@ async def list(ctx):
     user_reminders, reminder_count = reminder_db.get_user_reminders(ctx.author.id)
 
     if reminder_count == 0:
-        await ctx.respond("❌ You don't have any active reminders!")
+        await ctx.respond("❌ You don't have any active reminders!", ephemeral=True)
     else:
         embed = discord.Embed(title="Your reminders")
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar.url)
 
-        reminder_text = "\n".join([f"🔔 **{reminder["reason"]}** <t:{reminder["timestamp"]}:R>" for reminder in user_reminders])
+        reminder_text = "\n".join([f"🔔 `({reminder["reminder_id"]})` **{reminder["reason"]}** <t:{reminder["timestamp"]}:R>" for reminder in user_reminders])
 
         embed.add_field(name="", value=reminder_text)
 
@@ -139,7 +143,7 @@ async def list(ctx):
 
         view = ReminderView(user_reminders)
 
-        await ctx.respond(embed=embed, view=view)
+        await ctx.respond(embed=embed, view=view, ephemeral=True)
 
 
 # checks if there are any due reminders every 60 seconds
