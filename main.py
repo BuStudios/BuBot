@@ -167,8 +167,11 @@ async def list(ctx):
 @bot.slash_command(guild_ids=[guild_id], name="ban", description="Ban a member")
 @commands.has_permissions(ban_members=True)
 async def ban(ctx, member: Option(discord.User, "Select a member to ban"), reason: Option(str, "Reason for the ban")): # type: ignore
-    await member.ban(reason=reason)
-    await ctx.respond(f"banned user {member.display_name} because of {reason}")
+    try:
+        await member.ban(reason=reason)
+        await ctx.respond(f"banned user {member.display_name} because of {reason}")
+    except Exception as e:
+        await ctx.respond(f"an error occured: `{e}`")
 
 
 # checks if there are any due reminders every 60 seconds
