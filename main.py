@@ -64,9 +64,9 @@ class CancelButton(discord.ui.View):
             await interaction.followup.send("✅ Canceled Reminder!", ephemeral=True)
         else:
             await interaction.response.send_message("❌ You can't cancel someone elses reminder!", ephemeral=True)
-    
 
-# logging in msgq
+
+# logging in msg
 @bot.event
 async def on_ready():
     print(f"Logged in as {bot.user}")
@@ -162,6 +162,13 @@ async def list(ctx):
         view = ReminderView(user_reminders)
 
         await ctx.respond(embed=embed, view=view, ephemeral=True)
+
+
+@bot.slash_command(guild_ids=[guild_id], name="ban", description="Ban a member")
+@commands.has_permissions(ban_members=True)
+async def ban(ctx, member: Option(discord.User, "Select a member to ban"), reason: Option(str, "Reason for the ban")): # type: ignore
+    await member.ban(reason=reason)
+    await ctx.respond(f"banned user {member.display_name} because of {reason}")
 
 
 # checks if there are any due reminders every 60 seconds
