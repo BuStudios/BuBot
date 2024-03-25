@@ -182,7 +182,7 @@ async def check_reminders():
         user = await bot.fetch_user(reminders["user_id"]) # fetches the user by their user_id
 
         dm_channel = await user.create_dm() # creates a dm with the user
-        await dm_channel.send(f"🔔 {reminders["reason"]}") # send a dm to the user
+        await dm_channel.send(f"🔔 {reminders['reason']}") # send a dm to the user
         # <@{reminders["user_id"]}> Reminder!
 
         reminder_db.delete_reminder(reminders["reminder_id"]) # deletes the reminder from the database
