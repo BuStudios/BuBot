@@ -14,7 +14,6 @@ load_dotenv() # loads the secret files
 bot_token = os.getenv("BOT_TOKEN") # getenv is better than .environ apparantly
 guild_id = os.getenv("GUILD_ID")
 # guilds used to add command to a specific server immediatly
-reminder_channel = os.getenv("REMINDER_CHANNEL")
 
 
 intents = discord.Intents.default()
