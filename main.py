@@ -168,7 +168,7 @@ async def list(ctx):
 async def ban(ctx, member: Option(discord.User, "Select a member to ban"), reason: Option(str, "Reason for the ban")): # type: ignore
     try:
         await member.ban(reason=reason)
-        await ctx.respond(f"banned user {member.display_name} because of {reason}")
+        await ctx.respond(f"banned user <@{member.id}> because of {reason}")
     except Exception as e:
         await ctx.respond(f"an error occured: `{e}`")
 
