@@ -28,7 +28,7 @@ response = {
     "bubot": "amogus",
 }
 
-
+# Custom dropdown for the reminders
 class ReminderView(discord.ui.View):
     def __init__(self, user_reminders):
         super().__init__()
@@ -47,7 +47,7 @@ class ReminderView(discord.ui.View):
         else:
             await interaction.response.send_message("❌ Could not find the reminder to delete!", ephemeral=True)
 
-
+# Custom button for reminder
 class CancelButton(discord.ui.View):
     def __init__(self, user_id):
         super().__init__()
