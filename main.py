@@ -100,16 +100,7 @@ bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")(cm
 
 bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")(cmds.ping)
 
-
-@bot.slash_command(guild_ids=[guild_id], name="avatar", description="Get a user's avatar")
-async def avatar(ctx, user: Option(discord.User, "Select a user", required=False) = None):  # type: ignore
-    if user == None:
-        user = ctx.author
-
-    embed = discord.Embed()
-    embed.set_image(url=user.display_avatar.with_size(256).url)
-    embed.set_footer(text=f"Avatar from {user.name}")
-    await ctx.respond(embed=embed)
+bot.slash_command(guild_ids=[guild_id], name="avatar", description="Get a user's avatar")(cmds.avatar)
 
 
 reminder = bot.create_group("reminder", "manage reminders")
