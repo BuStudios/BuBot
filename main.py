@@ -9,6 +9,8 @@ import requests
 import time
 import os
 
+import commands as cmds
+
 
 load_dotenv() # loads the secret files
 bot_token = os.getenv("BOT_TOKEN") # getenv is better than .environ apparantly
@@ -91,9 +93,11 @@ async def on_message(message):
 
 
 # test command
-@bot.slash_command(guild_ids=[guild_id])
-async def hello(ctx):
-    await ctx.respond(f"Hello {ctx.author.display_name}!")
+#@bot.slash_command(guild_ids=[guild_id])
+#async def hello(ctx):
+#    await ctx.respond(f"Hello {ctx.author.display_name}!")
+            
+bot.slash_command(guild_ids=[guild_id])(cmds.hello)
 
 
 @bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")
