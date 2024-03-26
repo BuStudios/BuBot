@@ -92,34 +92,13 @@ async def on_message(message):
             await message.channel.send(msg_rick)
 
 
-# test command
-#@bot.slash_command(guild_ids=[guild_id])
-#async def hello(ctx):
-#    await ctx.respond(f"Hello {ctx.author.display_name}!")
-            
+# COMMANDS
+
 bot.slash_command(guild_ids=[guild_id])(cmds.hello)
 
+bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")(cmds.meme)
 
-@bot.slash_command(guild_ids=[guild_id], name="meme", description="get memed")
-async def meme(ctx):
-    # meme api
-    meme = json.loads(requests.get("https://meme-api.com/gimme/memes").text)
-    meme_image = meme["preview"][-1]
-    meme_title = meme["title"]
-    
-    embed = discord.Embed(title=meme_title)
-    embed.set_image(url=meme_image)
-
-    # doesnt allow nsfw content
-    if meme["nsfw"] == True:
-        await ctx.respond("error")
-    else:
-        await ctx.respond(embed=embed)
-
-
-@bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")
-async def ping(ctx):
-    await ctx.respond(f"Pong! The bots latency is {(round(bot.latency * 10) / 10)} ms")
+bot.slash_command(guild_ids=[guild_id], name="ping", description="pings the bot")(cmds.ping)
 
 
 @bot.slash_command(guild_ids=[guild_id], name="avatar", description="Get a user's avatar")
