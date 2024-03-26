@@ -21,7 +21,7 @@ intents.messages = True  # Enables the bot to receive messages
 intents.message_content = True  # This is needed for accessing message.content
 
 
-bot = discord.Bot(command_prefix="!", intents=intents)
+bot = discord.Bot(command_prefix="!", intents=intents, activity=discord.CustomActivity("Cookies 🍪"))
 
 
 response = {
@@ -168,7 +168,7 @@ async def list(ctx):
 async def ban(ctx, member: Option(discord.User, "Select a member to ban"), reason: Option(str, "Reason for the ban")): # type: ignore
     try:
         await member.ban(reason=reason)
-        await ctx.respond(f"banned user <@{member.id}> because of {reason}")
+        await ctx.respond(f"✅ Banned <@{member.id}>! {reason}")
     except Exception as e:
         await ctx.respond(f"an error occured: `{e}`")
 
