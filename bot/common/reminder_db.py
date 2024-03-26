@@ -6,7 +6,7 @@ import os
 
 
 # loads the environment file
-load_dotenv()
+load_dotenv(dotenv_path="config/.env")
 
 
 # connects to the MongoDB database

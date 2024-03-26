@@ -3,16 +3,16 @@ from discord.ui.item import Item
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from discord.commands import Option
-import common.reminder_db as reminder_db
+import bot.common.reminder_db as reminder_db
 import json
 import requests
 import time
 import os
 
-import commands as cmds
+import bot.commands as cmds
 
 
-load_dotenv() # loads the secret files
+load_dotenv(dotenv_path="config/.env") # loads the secret files
 bot_token = os.getenv("BOT_TOKEN") # getenv is better than .environ apparantly
 guild_id = os.getenv("GUILD_ID")
 # guilds used to add command to a specific server immediatly
