@@ -3,7 +3,7 @@ from discord.ui.item import Item
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from discord.commands import Option
-import reminder_db
+import util.reminder_db as reminder_db
 import json
 import requests
 import time
