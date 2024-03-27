@@ -3,13 +3,13 @@ from discord.ui.item import Item
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from discord.commands import Option
-import bot.common.reminder_db as reminder_db
+import common.reminder_db as reminder_db
 import json
 import requests
 import time
 import os
 
-import bot.commands as cmds
+import commands as cmds
 
 
 load_dotenv(dotenv_path="config/.env") # loads the secret files
