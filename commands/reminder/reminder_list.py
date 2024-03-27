@@ -7,7 +7,7 @@ async def reminder_list(ctx):
     user_reminders, reminder_count = reminder_db.get_user_reminders(ctx.author.id)
 
     if reminder_count == 0:
-        await ctx.respond(f"{common.emojis.yes} You don't have any active reminders!", ephemeral=True)
+        await ctx.respond(f"{common.emojis.no} You don't have any active reminders!", ephemeral=True)
     else:
         embed = discord.Embed(title="Your reminders")
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar.url)
