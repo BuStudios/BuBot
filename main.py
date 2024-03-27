@@ -30,41 +30,6 @@ response = {
     "bubot": "amogus",
 }
 
-# Custom dropdown for the reminders
-class ReminderView(discord.ui.View):
-    def __init__(self, user_reminders):
-        super().__init__()
-        self.select_menu = discord.ui.Select(placeholder="Select a reminder to cancel", min_values=1, max_values=1)
-
-        for reminder in user_reminders:
-            self.select_menu.add_option(label=reminder["reminder_id"], description=reminder["reason"], value=reminder["reminder_id"])
-            
-        self.select_menu.callback = self.select_callback
-        self.add_item(self.select_menu)
-
-    async def select_callback(self, interaction: discord.Interaction):
-        deletion = reminder_db.delete_reminder(self.select_menu.values[0])
-        if deletion == "success":
-            await interaction.response.send_message(f"✅ The reminder `{self.select_menu.values[0]}` has been canceled!", ephemeral=True)
-        else:
-            await interaction.response.send_message("❌ Could not find the reminder to delete!", ephemeral=True)
-
-# Custom button for reminder
-class CancelButton(discord.ui.View):
-    def __init__(self, user_id):
-        super().__init__()
-        self.user_id = user_id
-
-    @discord.ui.button(label="Cancel Reminder", style=discord.ButtonStyle.danger)
-    async def button_callback(self, button, interaction):
-        if interaction.user.id == self.user_id:
-
-            button.disabled = True
-            await interaction.response.edit_message(view=self)
-
-            await interaction.followup.send("✅ Canceled Reminder!", ephemeral=True)
-        else:
-            await interaction.response.send_message("❌ You can't cancel someone elses reminder!", ephemeral=True)
 
 
 # logging in msg
@@ -105,36 +70,8 @@ bot.slash_command(guild_ids=[guild_id], name="avatar", description="Get a user's
 
 reminder = bot.create_group("reminder", "manage reminders")
 
-
-@reminder.command(guild_ids=[guild_id], name="set", description="Set a reminder")
-async def set(ctx, reminder: Option(str, "Reminder reason", max_length=50), timestamp: Option(int, "Reminder Time", name="time")):  # type: ignore
-# ^ the Option thing gives an error, but idk why lol --> will change later! ⚠️
-
-    reminder_time_unix = timestamp + int(time.time())
-    reminder_db.add_reminder(reminder_time_unix, ctx.author.name, ctx.author.id, reminder)
-
-    await ctx.respond(f"✅ Reminder set! I will remind you <t:{reminder_time_unix}:R>", ephemeral=True, view=CancelButton(ctx.author.id))
-
-
-@reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")
-async def list(ctx):
-    user_reminders, reminder_count = reminder_db.get_user_reminders(ctx.author.id)
-
-    if reminder_count == 0:
-        await ctx.respond("❌ You don't have any active reminders!", ephemeral=True)
-    else:
-        embed = discord.Embed(title="Your reminders")
-        embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar.url)
-
-        reminder_text = "\n".join([f"🔔 `({reminder['reminder_id']})` **{reminder['reason']}** <t:{reminder['timestamp']}:R>" for reminder in user_reminders])
-
-        embed.add_field(name="", value=reminder_text)
-
-        embed.set_footer(text=f"You have {reminder_count} active reminders")
-
-        view = ReminderView(user_reminders)
-
-        await ctx.respond(embed=embed, view=view, ephemeral=True)
+reminder.command(guild_ids=[guild_id], name="set", description="Set a reminder")(cmds.set_reminder)
+reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")(cmds.reminder_list)
 
 
 @bot.slash_command(guild_ids=[guild_id], name="ban", description="Ban a member")
