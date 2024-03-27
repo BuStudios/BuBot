@@ -16,4 +16,4 @@ async def timeout(ctx, member: Option(discord.User, "Select a member to time out
         await ctx.respond(f"I don't have permission to timeout this member. Are they Admin? {common.emojis.hmmm}")
 
     except Exception as e:
-        await ctx.respond(f"{common.emojis.error} An error occured: `{e}`")
+        await ctx.respond(f"{common.emojis.error} An error occured while timing out <@{member.id}>: `{e}`", ephemeral=True)
