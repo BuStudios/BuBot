@@ -5,3 +5,4 @@ from .avatar.avatar import avatar
 from .reminder.set_reminder import set_reminder
 from .reminder.reminder_list import reminder_list
 from .moderation.ban import ban
+from .moderation.timeout import timeout

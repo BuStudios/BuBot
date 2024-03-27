@@ -74,7 +74,10 @@ reminder.command(guild_ids=[guild_id], name="set", description="Set a reminder")
 reminder.command(guild_ids=[guild_id], name="list", description="View your reminders")(cmds.reminder_list)
 
 
+# MODERATION
+
 bot.slash_command(guild_ids=[guild_id], name="ban", description="Ban a member")(cmds.ban)
+bot.slash_command(guild_ids=[guild_id], name="timeout", description="timeout a member")(cmds.timeout)
 
 
 # checks if there are any due reminders every 60 seconds
