@@ -12,7 +12,7 @@ async def reminder_list(ctx):
         embed = discord.Embed(title="Your reminders")
         embed.set_author(name=ctx.author.display_name, icon_url=ctx.author.display_avatar.url)
 
-        reminder_text = "\n".join([f"🔔 `({reminder['reminder_id']})` **{reminder['reason']}** <t:{reminder['timestamp']}:R>" for reminder in user_reminders])
+        reminder_text = "\n".join([f"🔔 `({reminder['reminder_id']})` **{reminder['reason']}** <t:{round(int(reminder['timestamp']) / 1000)}:R>" for reminder in user_reminders])
 
         embed.add_field(name="", value=reminder_text)
 

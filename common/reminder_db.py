@@ -34,7 +34,7 @@ def add_reminder(timestamp, username, user_id, reason):
 # checks for all due reminders
 def check_due_reminders():
     query = {
-        "timestamp": {"$lt": int(time.time())} # checks if a reminder timestamp is less than the current timestamp
+        "timestamp": {"$lt": int(time.time() * 1000)} # checks if a reminder timestamp is less than the current timestamp
     }
     due_reminders = collection.find(query)
     return due_reminders
