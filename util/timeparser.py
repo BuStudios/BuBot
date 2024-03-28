@@ -1,5 +1,5 @@
 import re
-import time
+from time import time as unix_time
 from datetime import datetime
 
 def isNumber(input):
@@ -23,6 +23,10 @@ def datetimeParse(time):
         elif int(time) >= 1_000_000_000: return str(int(time) * 1000) # convert to millis
         else: return "error" 
     
+
+    r""""
+    !! This is not used as it would require the timezone of the user
+
     # check for any structured time layout, e.g YYYY-MM-DD HH:MM:SS
 
     time_pattern = r"(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})(?:(?: +|T)(?P<hour>\d{1,2})(?::(?P<minute>\d{1,2}))?(?::(?P<second>\d{1,2}))?)?"
@@ -42,9 +46,33 @@ def datetimeParse(time):
             return "error"
 
         return timestamp
+    """
+
+    # check for relative time expressions, e.g 5h 5min 10s
+
+    pattern = r"\s*(?:(?P<years>\d+(?:\.\d+)?)\s*y(?:e?a?r?s?))?\s*(?:(?P<months>\d+(?:\.\d+)?)\s*m(?:o?nth|o)s?)?\s*(?:(?P<weeks>\d+(?:\.\d+)?)\s*w(?:(?:ee)?k?s?))?\s*(?:(?P<days>\d+(?:\.\d+)?)\s*d(?:ays?)?)?\s*(?:(?P<hours>\d+(?:\.\d+)?)\s*h(?:(our)?s?)?)?\s*(?:(?P<minutes>\d+(?:\.\d+)?)\s*m(?:in(?:ute)?s?)?)?\s*(?:(?P<seconds>\d+(?:\.\d+)?)\s*s(?:ec(?:ond)?s?)?)?\s*"
+    match = re.match(pattern, time)
     
-    # check for relative time expressions, e.g 4y 5min
+    if match:
+        date_groups = match.groupdict()
+        
+        years, months, weeks, days, hours, minutes, seconds = date_groups["years"] or "0", date_groups["months"] or "0", date_groups["weeks"] or "0", date_groups["days"] or "0", date_groups["hours"] or "0", date_groups["minutes"] or "0", date_groups["seconds"] or "0"
+        
+        # this is not a very efficient nor accurate way to calculate the difference
+        # i will change it when i have time to do so
+        milliseconds = float(years) * 365 * 24 * 60 * 60 * 1000
+        milliseconds += float(months) * 30 * 24 * 60 * 60 * 1000
+        milliseconds += float(weeks) * 7 * 24 * 60 * 60 * 1000
+        milliseconds += float(days) * 24 * 60 * 60 * 1000
+        milliseconds += float(hours) * 60 * 60 * 1000
+        milliseconds += float(minutes) * 60 * 1000
+        milliseconds += float(seconds) * 1000
 
-
-
-print(datetimeParse("5min"))
+        # if more than 2 years error
+        if milliseconds / 1000 / 60 / 60 / 24 / 265 >= 2:
+            return "error"
+        
+        return round((unix_time() * 1000) + milliseconds)
+    
+    # no way to parse the time was found
+    return "error"

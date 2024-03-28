@@ -1,6 +1,8 @@
-# this is just for testing
+import sys
+import os
+sys.path.append(os.getcwd())
 
-import datetime
-print(datetime.timedelta(minutes=1))
+from util.timeparser import datetimeParse
 
-print("lI" * 10000)
+print(datetimeParse("1min"))
+print(datetimeParse("1year 5 weeks 12 days 11.5min"))
