@@ -1,5 +1,6 @@
 import re
 import time
+from datetime import datetime
 
 def isNumber(input):
     try: float(input); return True
@@ -22,8 +23,28 @@ def datetimeParse(time):
         elif int(time) >= 1_000_000_000: return str(int(time) * 1000) # convert to millis
         else: return "error" 
     
-    # check if input matches any structured time layout, e.g YYYY-MM-DD HH:MM:SS
+    # check for any structured time layout, e.g YYYY-MM-DD HH:MM:SS
+
+    time_pattern = r"(?P<year>\d{4})-(?P<month>\d{1,2})-(?P<day>\d{1,2})(?:(?: +|T)(?P<hour>\d{1,2})(?::(?P<minute>\d{1,2}))?(?::(?P<second>\d{1,2}))?)?"
+    match = re.match(time_pattern, time)
+    if match:
+        date_groups = match.groupdict()
+
+        # convert to the YYYY-MM-DD HH:MM:SS format
+        # use -or- to remove any None and replace it with a 0
+
+        year, month, day, hour, minute, second = date_groups["year"] or "0", date_groups["month"] or "0", date_groups["day"] or "0", date_groups["hour"] or "0", date_groups["minute"] or "0", date_groups["second"] or "0"
+
+        try:
+            new_time = datetime(int(year), int(month), int(day), int(hour), int(minute), int(second))
+            timestamp = int(datetime.timestamp(new_time)) * 1000
+        except Exception:
+            return "error"
+
+        return timestamp
     
+    # check for relative time expressions, e.g 4y 5min
 
 
-print(datetimeParse("1223444534"))
+
+print(datetimeParse("5min"))
