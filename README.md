@@ -1,3 +1,2 @@
 # BuBot
-the source code for epic my discord bot :D\
-unfinished atm
+- work in progress
