@@ -26,12 +26,6 @@ intents.message_content = True  # This is needed for accessing message.content
 bot = discord.Bot(command_prefix="!", intents=intents, activity=discord.CustomActivity("Cookies 🍪"))
 
 
-response = {
-    "bubot": "amogus",
-}
-
-
-
 # logging in msg
 @bot.event
 async def on_ready():
@@ -46,10 +40,7 @@ async def on_message(message):
     
     user_message = message.content.lower()
 
-    if user_message in response: # Checks if item is in the message
-        await message.channel.send(response[user_message])
-    if user_message in ("e", "a"): # imagine using tuples xd
-            await message.add_reaction("🇪")
+    await message.add_reaction("🇪")
     
     if "rick" in user_message:
         message_rick = ["never", "gonna", "give", "you", "up", "🦀"]
