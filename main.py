@@ -37,15 +37,8 @@ async def on_ready():
 async def on_message(message):
     if message.author.bot:  # Ignore messages from bots
         return
-    
     user_message = message.content.lower()
-
     await message.add_reaction("🇪")
-    
-    if "rick" in user_message:
-        message_rick = ["never", "gonna", "give", "you", "up", "🦀"]
-        for msg_rick in message_rick:
-            await message.channel.send(msg_rick)
 
 
 # COMMANDS
