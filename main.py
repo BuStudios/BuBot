@@ -1,12 +1,7 @@
 import discord
-from discord.ui.item import Item
 from dotenv import load_dotenv
-from discord.ext import commands, tasks
-from discord.commands import Option
+from discord.ext import tasks
 import common.reminder_db as reminder_db
-import json
-import requests
-import time
 import os
 
 import commands as cmds
